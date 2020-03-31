@@ -4,27 +4,37 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import com.example.demo.entity.Instructor;
+import com.example.demo.entity.InstructorDetail;
 import com.example.demo.entity.Student;
 
-public class CreateStudent {
+public class Create {
 
 	public static void main(String[] args) {
 		
 		
 //		create session factory
-		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Student.class).buildSessionFactory();
+		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
+				.addAnnotatedClass(Instructor.class)
+				.addAnnotatedClass(InstructorDetail.class)
+				.buildSessionFactory();
 		
 //		create session
 		Session session = factory.getCurrentSession();
 		
 		try {
 			
-//			create java object
-			Student student = new Student("vanessa","vaksmann","rihab@web.de");
 //			start transaction
 			session.beginTransaction();
-//			save the student object
-			session.save(student);
+			
+			int id = 1;
+			Instructor instructor = session.get(Instructor.class, id);
+			
+			if(instructor != null) {
+				session.delete(instructor);
+			}
+
+
 //			commit transaction
 			session.getTransaction().commit();
 			
